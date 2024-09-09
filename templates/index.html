@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detección de Objetos en Tiempo Real</title>
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .video-container {
+            position: relative;
+            width: 640px;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        .video-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .controls {
+            margin-top: 20px;
+        }
+
+        .controls button {
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="video-container">
+            <img id="video-feed" src="#" alt="Video Feed">
+        </div>
+        <div class="controls">
+            <button id="showHideStream">Show Stream</button>
+            <button id="runStopDetection">Run Detection</button>
+            <input type="range" id="confidenceThreshold" min="0" max="100" value="50"> Confidence Threshold
+        </div>
+    </div>
+
+    <script>
+        const showHideStreamButton = document.getElementById('showHideStream');
+        const runStopDetectionButton = document.getElementById('runStopDetection');
+        const confidenceThresholdInput = document.getElementById('confidenceThreshold');
+        const videoFeed = document.getElementById('video-feed');
+
+        let isStreamVisible = false;
+        let isDetectionRunning = false;
+
+        showHideStreamButton.addEventListener('click', () => {
+            if (isStreamVisible) {
+                videoFeed.src = "#";
+                showHideStreamButton.textContent = "Show Stream";
+            } else {
+                videoFeed.src = "{{ url_for('video_feed') }}";
+                showHideStreamButton.textContent = "Hide Stream";
+            }
+            isStreamVisible = !isStreamVisible;
+        });
+
+        runStopDetectionButton.addEventListener('click', () => {
+            if (isDetectionRunning) {
+                // Stop detection
+                runStopDetectionButton.textContent = "Run Detection";
+            } else {
+                // Start detection
+                runStopDetectionButton.textContent = "Stop Detection";
+            }
+            isDetectionRunning = !isDetectionRunning;
+        });
+
+        confidenceThresholdInput.addEventListener('input', () => {
+            // Update confidence threshold based on the slider value
+            // You'll need to pass this value to the Flask application to update the detection logic
+            console.log('Confidence threshold:', confidenceThresholdInput.value);
+        });
+    </script>
+</body>
+</html>

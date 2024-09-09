@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webcam - Mi Aplicación Flask</title>
+    <style>
+        #video-container {
+            width: 640px;
+            height: 480px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Página de Webcam</h1>
+    <div id="video-container">
+        <video id="webcam" autoplay playsinline></video>
+    </div>
+    <a href="/">Volver a Inicio</a>
+
+    <script>
+        const video = document.getElementById('webcam');
+
+        async function setupWebcam() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+            } catch (error) {
+                console.error('Error al acceder a la webcam:', error);
+                alert('No se pudo acceder a la webcam. Por favor, asegúrate de que tienes una webcam conectada y has dado permiso para usarla.');
+            }
+        }
+
+        setupWebcam();
+    </script>
+</body>
+</html>
